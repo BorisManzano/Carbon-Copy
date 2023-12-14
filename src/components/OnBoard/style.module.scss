@@ -1,0 +1,39 @@
+.dad {
+  display: flex;
+  justify-content: center;
+}
+
+.childContainer {
+  display: flex;
+  justify-content: center;
+  width: 22rem;
+  background: linear-gradient(154deg, #0047ff 0%, #dadada80 124.22%);
+  border-radius: 0px 0px 25px 25px;
+  opacity: 0.8;
+}
+
+.child {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  width: 22rem;
+  height: 26rem;
+}
+
+.lines {
+  border-radius: 0px 0px 25px 25px;
+  position: absolute;
+  width: 22rem;
+  height: 26rem;
+  opacity: 0.2;
+  background-image: linear-gradient(#ffffff 1px, transparent 1px),
+    linear-gradient(to right, #ffffff 1px, transparent 1px);
+  background-size: 4rem 4rem;
+}
+
+.svgContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 2rem;
+}
