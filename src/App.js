@@ -1,7 +1,8 @@
 import OnBoard from "./components/OnBoard";
+import SingUp from "./components/SingUp";
 
 function App() {
-  return <OnBoard />;
+  return <SingUp />;
 }
 
 export default App;

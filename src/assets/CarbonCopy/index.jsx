@@ -1,11 +1,11 @@
 import React from "react";
 
-function CarbonCopy() {
+function CarbonCopy({ width, height }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="285"
-      height="117"
+      width={width || "285"}
+      height={height || "117"}
       viewBox="0 0 285 117"
       fill="none"
     >
