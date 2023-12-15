@@ -5,8 +5,15 @@ import Block from "../../assets/Block";
 import SMS from "../../assets/SMS";
 import CloseEye from "../../assets/CloseEye";
 import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import Login from "../../state/user";
 
 function SingUpForm() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const { pathname } = location;
   const [data, setData] = useState({
     username: "",
     email: "",
@@ -23,49 +30,94 @@ function SingUpForm() {
     });
   };
 
+  const handleForgotYourPassword = () => {
+    navigate("/recover-password");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (pathname === "/login") {
+      setSubmitted(true);
 
-    let missingFields = [];
+      let missingFields1 = [];
 
-    if (!data.username) {
-      missingFields.push("username");
-    }
-    if (!data.email) {
-      missingFields.push("email");
-    }
-    if (!data.password) {
-      missingFields.push("password");
-    }
+      if (!data.email) {
+        missingFields1.push("email");
+      }
+      if (!data.password) {
+        missingFields1.push("password");
+      }
 
-    if (missingFields.length > 0) {
-      setError(`Complete the following fields: ${missingFields.join(", ")}`);
+      if (missingFields1.length > 0) {
+        setError(`Complete the following fields: ${missingFields1.join(", ")}`);
+      } else {
+        setError("");
+
+        axios
+          .post(
+            "http://localhost:3001/api/users/login",
+            {
+              email: data.email,
+              password: data.password,
+            },
+            {
+              withCredentials: true,
+            }
+          )
+          .then((res) => {
+            dispatch(Login(res.data));
+            navigate("home");
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
     } else {
-      setError("");
+      setSubmitted(true);
 
-      axios
-        .post("http://localhost:3001/api/users/register", data, {
-          withCredentials: true,
-        })
-        .then((resp) => {
-          axios.post(
-            `http://localhost:3001/api/nodeMailer/accountConfirmation/${resp.data.email}`
-          );
-        })
-        .catch((err) => {
-          setError(err.response.data.error);
-        });
+      let missingFields = [];
+
+      if (!data.username) {
+        missingFields.push("username");
+      }
+      if (!data.email) {
+        missingFields.push("email");
+      }
+      if (!data.password) {
+        missingFields.push("password");
+      }
+
+      if (missingFields.length > 0) {
+        setError(`Complete the following fields: ${missingFields.join(", ")}`);
+      } else {
+        setError("");
+        axios
+          .post("http://localhost:3001/api/users/register", data, {
+            withCredentials: true,
+          })
+          .then((resp) => {
+            axios.post(
+              `http://localhost:3001/api/nodeMailer/accountConfirmation/${resp.data.email}`
+            );
+          })
+          .catch((err) => {
+            // setError(err.response.data.error);
+          });
+      }
     }
   };
-  console.log(data.password.length);
   return (
     <form onSubmit={handleSubmit}>
       <div className={s.divContainer}>
         <div className={s.visual}>
           <p className={`${s.text3} ${s.row2}`}>
-            <p className={s.green}>let</p> user = {`  { name: `}{" "}
-            <p className={s.rose}>{`'${data.username}'`}</p>
+            <p className={s.green}>let</p> {"user = {"}
+            {pathname === "/register" ? " name: " : ""}
+            {pathname === "/register" ? (
+              <p className={s.rose}>{`'${data.username}'`}</p>
+            ) : (
+              ""
+            )}
           </p>
           <p className={`${s.text3} ${s.row2}`}>
             <p>email:</p>
@@ -77,21 +129,25 @@ function SingUpForm() {
             <p>{"}"}</p>
           </p>
         </div>
-        <div className={s.data}>
-          <div className={s.circle}>
-            <Human />
+        {pathname === "/register" ? (
+          <div className={s.data}>
+            <div className={s.circle}>
+              <Human />
+            </div>
+            <input
+              className={s.none}
+              type="text"
+              name="username"
+              id="username"
+              placeholder="Username"
+              value={data.username}
+              onChange={handleInputChange}
+              title="Please enter your username."
+            />
           </div>
-          <input
-            className={s.none}
-            type="text"
-            name="username"
-            id="username"
-            placeholder="Username"
-            value={data.username}
-            onChange={handleInputChange}
-            title="Please enter your username."
-          />
-        </div>
+        ) : (
+          ""
+        )}
         <div className={s.data}>
           <SMS />
           <input
@@ -119,12 +175,21 @@ function SingUpForm() {
           />
           <CloseEye />
         </div>
+        {pathname === "/register" ? (
+          ""
+        ) : (
+          <button onClick={handleForgotYourPassword} className={`${s.btn2}`}>
+            forgot your password()
+          </button>
+        )}
         <div>
           {submitted && error ? <p style={{ margin: 0 }}>{error}.</p> : ""}
         </div>
       </div>
       <div className={s.left}>
-        <button className={`${s.text3} ${s.btn}`}>SING UP</button>
+        <button className={`${s.text3} ${s.btn}`}>
+          {pathname === "/register" ? "SING UP" : "LOGIN"}
+        </button>
       </div>
     </form>
   );

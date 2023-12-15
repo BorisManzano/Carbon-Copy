@@ -17,20 +17,20 @@ function Block() {
         height="6.58655"
         rx="1"
         stroke="white"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M14.8298 16.5615V17.5711"
         stroke="white"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M12.45 13.3751V11C12.45 9.89543 13.3454 9 14.45 9H15.8827C16.9873 9 17.8827 9.89543 17.8827 11V11.1154"
         stroke="white"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

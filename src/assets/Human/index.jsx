@@ -14,14 +14,14 @@ function Human() {
         cy="3.46586"
         r="2.46586"
         stroke="white"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M1 11.1652V10.7628C1 9.65825 1.89543 8.76282 3 8.76282H8.56192C9.66649 8.76282 10.5619 9.65825 10.5619 10.7628V11.1652"
         stroke="white"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

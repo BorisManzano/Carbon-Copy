@@ -12,8 +12,8 @@ function SMS() {
       <path
         d="M9 10H21V19H9V10ZM9 10L15 15L18 13"
         stroke="white"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <circle cx="14.5" cy="14.5" r="14" stroke="white" />
     </svg>
