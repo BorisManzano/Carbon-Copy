@@ -4,6 +4,7 @@ import Human from "../../assets/Human";
 import Block from "../../assets/Block";
 import SMS from "../../assets/SMS";
 import CloseEye from "../../assets/CloseEye";
+import OpenEye from "../../assets/OpenEye";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -21,6 +22,11 @@ function SingUpForm() {
   });
   const [error, setError] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleToggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -106,11 +112,12 @@ function SingUpForm() {
       }
     }
   };
+  console.log(showPassword);
   return (
     <form onSubmit={handleSubmit}>
       <div className={s.divContainer}>
         <div className={s.visual}>
-          <p className={`${s.text3} ${s.row2}`}>
+          <div className={`${s.text3} ${s.row2}`}>
             <p className={s.green}>let</p> {"user = {"}
             {pathname === "/register" ? " name: " : ""}
             {pathname === "/register" ? (
@@ -118,16 +125,23 @@ function SingUpForm() {
             ) : (
               ""
             )}
-          </p>
-          <p className={`${s.text3} ${s.row2}`}>
+          </div>
+          <div className={`${s.text3} ${s.row2}`}>
             <p>email:</p>
             <p className={s.rose}>{`'${data.email}'`}</p>
-          </p>
-          <p className={`${s.text3} ${s.row2}`}>
+          </div>
+          <div className={`${s.text3} ${s.row2}`}>
             <p>password:</p>
-            <p className={s.rose}>{`'${"*".repeat(data.password.length)}'`}</p>
+            {!showPassword ? (
+              <p className={s.rose}>{`'${"*".repeat(
+                data.password.length
+              )}'`}</p>
+            ) : (
+              <p className={s.rose}>{`'${data.password}'`}</p>
+            )}
+
             <p>{"}"}</p>
-          </p>
+          </div>
         </div>
         {pathname === "/register" ? (
           <div className={s.data}>
@@ -165,7 +179,7 @@ function SingUpForm() {
           <Block />
           <input
             className={s.none}
-            type="password"
+            type={!showPassword ? "password" : "text"}
             name="password"
             id="password"
             placeholder="Password"
@@ -173,7 +187,9 @@ function SingUpForm() {
             onChange={handleInputChange}
             title="Please enter your password."
           />
-          <CloseEye />
+          <div className={s.eye} onClick={handleToggleShowPassword}>
+            {!showPassword ? <CloseEye /> : <OpenEye />}
+          </div>
         </div>
         {pathname === "/register" ? (
           ""
