@@ -5,6 +5,8 @@ import store from "./state/store";
 import OnBoard from "./components/OnBoard";
 import SingUp from "./components/SingUp";
 import Login from "./components/Login";
+import Home from "./components/Home";
+import TextEditor from "./components/TextEditor";
 
 function App() {
   return (
@@ -14,7 +16,8 @@ function App() {
           <Route path="/" element={<OnBoard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<SingUp />} />
-          <Route path="/recover-password" />
+          <Route path="/home" element={<Home />} />
+          <Route path="/recover-password" element={<TextEditor />} />
         </Routes>
       </Router>
     </Provider>

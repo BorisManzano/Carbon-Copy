@@ -20,6 +20,13 @@ function SingUpForm() {
     email: "",
     password: "",
   });
+  const [checklist, setChecklist] = useState({
+    uppercaseLetter: false,
+    lowercaseLetter: false,
+    oneNumber: false,
+    large: false,
+    validation: false,
+  });
   const [error, setError] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -112,10 +119,11 @@ function SingUpForm() {
       }
     }
   };
-  console.log(showPassword);
   return (
     <form onSubmit={handleSubmit}>
-      <div className={s.divContainer}>
+      <div
+        className={pathname === "/register" ? s.divContainerR : s.divContainerL}
+      >
         <div className={s.visual}>
           <div className={`${s.text3} ${s.row2}`}>
             <p className={s.green}>let</p> {"user = {"}
