@@ -183,4 +183,12 @@
   width: 19rem;
   border: 1rem solid white;
   border-radius: 0 1.563rem 1.563rem 1.563rem;
+  overflow: hidden;
+}
+
+.abs {
+  z-index: 999;
+  display: flex;
+  position: absolute;
+  margin: 1rem 0 0 1rem;
 }

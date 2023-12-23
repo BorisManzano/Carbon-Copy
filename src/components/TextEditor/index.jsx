@@ -1,44 +1,32 @@
 import React, { useState } from "react";
 import Editor from "@monaco-editor/react";
-import s from "./style.module.scss";
 
-const files = {
-  "script.js": {
-    name: "script.js",
-    language: "javascript",
-    value: "someJSCodeExample",
-  },
-  "style.css": {
-    name: "style.css",
-    language: "css",
-    value: "someCSSCodeExample",
-  },
-  "index.html": {
-    name: "index.html",
-    language: "html",
-    value: "someHTMLCodeExample",
-  },
-};
-
-function TextEditor() {
-  const [fileName, setFileName] = useState("script.js");
-
-  const file = files[fileName];
-
+function TextEditor({ file, labelS }) {
   const editorOptions = {
     minimap: { enabled: false },
     lineNumbers: "off",
     glyphMargin: false,
+    renderLineHighlight: "none",
+    scrollbar: {
+      horizontal: "hidden",
+      vertical: "hidden",
+      verticalScrollbarSize: "0px",
+    },
+    wordWrap: "on",
+    padding: { top: 40 },
+    lineDecorationsWidth: 0,
   };
+
+  const theme = labelS !== "Style" ? labelS : "vs-dark";
 
   return (
     <div>
       <Editor
         height="30vh"
-        theme="vs-dark"
+        theme={theme}
         path={file.name}
         defaultLanguage={file.language}
-        defaultValue={file.value}
+        defaultValue="const pluckDeep = key => obj => key.split('.').reduce((accum, key) => accum[key], obj)"
         options={editorOptions}
       />
     </div>

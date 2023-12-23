@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import s from "./style.module.scss";
 import Dropdown from "../../assets/Dropdown";
 
-function CustomSelect({ label, setLabel, options }) {
+function CustomSelect({ label, setLabel, options, setFile, files }) {
   const handleToggleLabel = (opt) => {
     setLabel(opt);
+    if (setFile && options.includes(opt)) {
+      setFile(files[opt]);
+    }
   };
 
   const isColor = (str) => {
@@ -52,7 +55,7 @@ function CustomSelect({ label, setLabel, options }) {
       >
         {options.map((opt, i) => (
           <li
-            key={i}
+            key={opt}
             className={`dropdown-item ${label === opt ? "active" : ""}`}
             onClick={() => handleToggleLabel(opt)}
           >
