@@ -7,8 +7,8 @@ import CloseEye from "../../assets/CloseEye";
 import OpenEye from "../../assets/OpenEye";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import Login from "../../state/user";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../state/user";
 
 function SingUpForm() {
   const navigate = useNavigate();
@@ -78,12 +78,11 @@ function SingUpForm() {
             }
           )
           .then((res) => {
-            dispatch(Login(res.data));
-            navigate("home");
+            dispatch(login(res.data));
+            console.log("RES ----------------> ", res);
+            navigate("/home");
           })
-          .catch((err) => {
-            console.error(err);
-          });
+          .catch((err) => {});
       }
     } else {
       setSubmitted(true);
@@ -109,16 +108,18 @@ function SingUpForm() {
             withCredentials: true,
           })
           .then((resp) => {
-            axios.post(
-              `http://localhost:3001/api/nodeMailer/accountConfirmation/${resp.data.email}`
-            );
+            // axios.post(
+            //   `http://localhost:3001/api/nodeMailer/accountConfirmation/${resp.data.email}`
+            // );
+            navigate("/login");
           })
           .catch((err) => {
-            // setError(err.response.data.error);
+            setError(err.response.data.error);
           });
       }
     }
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <div

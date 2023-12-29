@@ -1,21 +1,24 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
-
-export const login = createAction("LOGIN");
-export const logout = createAction("LOGOUT");
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   username: null,
   email: null,
+  isConfirmed: false,
 };
 
-const userReducer = createReducer(initialState, (builder) => {
-  builder
-    .addCase(login, (state, action) => {
-      return action.payload;
-    })
-    .addCase(logout, (state, action) => {
-      return { ...initialState };
-    });
+const userSlice = createSlice({
+  name: "user",
+  initialState,
+  reducers: {
+    login: (state, action) => action.payload,
+    logout: (state, action) => {
+      return {
+        ...initialState,
+      };
+    },
+  },
 });
 
-export default userReducer;
+export const { login, logout } = userSlice.actions;
+
+export default userSlice.reducer;

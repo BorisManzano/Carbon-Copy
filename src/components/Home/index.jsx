@@ -9,6 +9,9 @@ import Heart from "../../assets/Heart";
 import Profile from "../../assets/Profile";
 import CustomSelect from "../../commons/CustomSelect";
 import TextEditor from "../TextEditor";
+import html2canvas from "html2canvas";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const files = {
   "script.js": {
@@ -38,7 +41,10 @@ const colors = [
   "#9b59b6",
 ];
 
-function Home() {
+function Home({ toggleTheme }) {
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+  const [editorValue, setEditorValue] = useState("");
   const [selectedStyle, setSelectedStyle] = useState("");
   const styles = ["vs", "vs-dark", "hc-black", "hc-light"];
 
@@ -48,15 +54,83 @@ function Home() {
   const [labelF, setLabelF] = useState("Format");
   const [labelC, setLabelC] = useState(colors[0]);
 
-  console.log("selectedStyle ---------> ", selectedStyle);
+  const handleEditorChange = (value, event) => {
+    setEditorValue(value);
+  };
 
+  const handleDownloadClick = () => {
+    const divToCapture = document.getElementById("miDiv");
+
+    html2canvas(divToCapture)
+      .then((canvas) => {
+        const roundedCanvas = document.createElement("canvas");
+        const roundedContext = roundedCanvas.getContext("2d");
+        const borderRadius = 32;
+
+        roundedCanvas.width = canvas.width;
+        roundedCanvas.height = canvas.height;
+
+        roundedContext.beginPath();
+        roundedContext.moveTo(borderRadius, 0);
+        roundedContext.lineTo(roundedCanvas.width - borderRadius, 0);
+        roundedContext.quadraticCurveTo(
+          roundedCanvas.width,
+          0,
+          roundedCanvas.width,
+          borderRadius
+        );
+        roundedContext.lineTo(
+          roundedCanvas.width,
+          roundedCanvas.height - borderRadius
+        );
+        roundedContext.quadraticCurveTo(
+          roundedCanvas.width,
+          roundedCanvas.height,
+          roundedCanvas.width - borderRadius,
+          roundedCanvas.height
+        );
+        roundedContext.lineTo(borderRadius, roundedCanvas.height);
+        roundedContext.quadraticCurveTo(
+          0,
+          roundedCanvas.height,
+          0,
+          roundedCanvas.height - borderRadius
+        );
+        roundedContext.lineTo(0, borderRadius);
+        roundedContext.quadraticCurveTo(0, 0, borderRadius, 0);
+        roundedContext.closePath();
+        roundedContext.clip();
+
+        roundedContext.drawImage(canvas, 0, 0);
+
+        const dataURL = roundedCanvas.toDataURL("image/png");
+
+        const downloadLink = document.createElement("a");
+        downloadLink.href = dataURL;
+        downloadLink.download = "captura.png";
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      })
+      .catch((error) => {
+        console.error("Error al capturar la pantalla:", error);
+      });
+  };
+
+  useEffect(() => {
+    if (!user.email) {
+      navigate("/login");
+    }
+  }, []);
+  console.log(editorValue);
   return (
     <div className={s.dad}>
       <div className={s.childContainer2}>
         <div className={s.sun}>
-          <Download />
-          <Heart />
-          <Sun />
+          <Download handleDownloadClick={handleDownloadClick} />
+          <Heart editorValue={editorValue} />
+          <Sun toggleTheme={toggleTheme} />
           <Profile />
         </div>
         <div className={s.line}></div>
@@ -83,11 +157,19 @@ function Home() {
               setLabel={setLabelC}
               options={colors}
             />
-            <div className={s.textContainer} style={{ borderColor: labelC }}>
+            <div
+              id="miDiv"
+              className={s.textContainer}
+              style={{ borderColor: labelC }}
+            >
               <div className={s.abs}>
                 <Points />
               </div>
-              <TextEditor file={file} labelS={labelS} />
+              <TextEditor
+                handleEditorChange={handleEditorChange}
+                file={file}
+                labelS={labelS}
+              />
             </div>
           </div>
         </div>

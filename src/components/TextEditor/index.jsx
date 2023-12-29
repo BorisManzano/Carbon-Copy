@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Editor from "@monaco-editor/react";
 
-function TextEditor({ file, labelS }) {
+function TextEditor({ file, labelS, handleEditorChange }) {
   const editorOptions = {
     minimap: { enabled: false },
     lineNumbers: "off",
@@ -27,6 +27,7 @@ function TextEditor({ file, labelS }) {
         path={file.name}
         defaultLanguage={file.language}
         defaultValue="const pluckDeep = key => obj => key.split('.').reduce((accum, key) => accum[key], obj)"
+        onChange={handleEditorChange}
         options={editorOptions}
       />
     </div>
